@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">WeatherApp</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string-array name="cities_arrays">
+        <item>Jerusalem, IL</item>
+        <item>Tel Aviv, IL</item>
+        <item>Haifa, IL</item>
+        <item>Ekaterinburg, Russia</item>
+        <item>Berlin, DE</item>
+        <item>Stockholm, SE </item>
+        <item>Kathmandu, Nepal</item>
+        <item>Pokhara, Nepal</item>
+        <item>Amsterdam, NL</item>
+        <item>Current Location</item>
+    </string-array>
+
 </resources>
