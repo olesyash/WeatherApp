@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gridLayout">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/dateString"
+            android:id="@+id/dateTextView"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+        <TextView
+            android:layout_width="81dp"
+            android:layout_height="wrap_content"
+            android:text="@string/temperatureString"
+            android:id="@+id/tempTextView"
+            android:layout_row="1"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timeString"
+            android:id="@+id/timeTextView"
+            android:layout_row="2"
+            android:layout_column="0" />
+
+        <TextView
+            android:layout_width="81dp"
+            android:layout_height="wrap_content"
+            android:text="@string/descriptionString"
+            android:id="@+id/descriptionTextView"
+            android:layout_row="1"
+            android:layout_column="2" />
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="49dp"
+            android:id="@+id/weatherImageView"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:layout_rowSpan="3"
+            android:src="@android:drawable/ic_dialog_email" />
+
+    </GridLayout>
+</LinearLayout>

@@ -13,4 +13,11 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:spinnerMode="dropdown" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/weatherListView"
+        android:layout_below="@+id/citiesSpinner"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
