@@ -134,10 +134,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-        //dialog.cancel();
         request.setTag("REQUEST");
         queue.add(request);
-        //while (!gotResponse); //wait for http request to get response
     }
 
 }

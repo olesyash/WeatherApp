@@ -70,7 +70,7 @@ public class Helper {
                 String temp = obj2.getString("temp");
                 JSONArray list2 = obj.getJSONArray("weather");
                 String desc = list2.getJSONObject(0).getString("description");
-                String url = server + list2.getJSONObject(0).getString("icon");
+                String url = server + list2.getJSONObject(0).getString("icon")+".png";
 
                 weatherItem item = new weatherItem(date, time, temp+"C", desc, url);
                 indexes.add(item);
