@@ -1,9 +1,6 @@
 package com.example.olesya.weatherapp;
 
-import android.content.Context;
 import android.util.Log;
-
-import com.android.volley.RequestQueue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,21 +15,10 @@ import java.util.Map;
  */
 public class Helper {
 
-    private RequestQueue queue;
-    private Context context;
-    private static final String TAG = "MyDebug", APIKEY ="16d4c9fd39543f0a79094be205a4a130";
+    private static final String TAG = "MyDebug";
     private Map<String, String> dictionary;
-    private ArrayList<weatherItem> results;
-    private boolean gotResponse;
 
-    public Helper(Context context)
-    {
-        this.context = context;
-        createCitiesDictionary();
-        gotResponse = false;
-    }
-
-    private void createCitiesDictionary()
+    public void createCitiesDictionary()
     {
         dictionary = new HashMap<String, String>();
         dictionary.put("Jerusalem, IL", "281184");
@@ -56,12 +42,10 @@ public class Helper {
         int i;
         String server = "http://openweathermap.org/img/w/";
         ArrayList<weatherItem> indexes = new ArrayList<weatherItem>();
-        Log.i(TAG, "in jsonToarray");
         try {
 
             JSONArray list = json.getJSONArray("list");
             for(i=0;i<list.length();i++) {
-                Log.i(TAG, "in jsonToarray, for loop");
                 JSONObject obj = list.getJSONObject(i);
                 String dt = obj.getString("dt_txt");
                 String date = dt.split(" ")[0];
@@ -71,8 +55,7 @@ public class Helper {
                 JSONArray list2 = obj.getJSONArray("weather");
                 String desc = list2.getJSONObject(0).getString("description");
                 String url = server + list2.getJSONObject(0).getString("icon")+".png";
-
-                weatherItem item = new weatherItem(date, time, temp+"C", desc, url);
+                weatherItem item = new weatherItem(date, time, temp+"c", desc, url);
                 indexes.add(item);
             }
         }

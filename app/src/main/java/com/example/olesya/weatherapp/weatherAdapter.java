@@ -1,14 +1,15 @@
 package com.example.olesya.weatherapp;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 /**
@@ -35,16 +36,13 @@ public class weatherAdapter extends ArrayAdapter<weatherItem> {
         TextView wTemp = (TextView) convertView.findViewById(R.id.tempTextView);
         TextView wDesc = (TextView) convertView.findViewById(R.id.descriptionTextView);
         ImageView wImage = (ImageView) convertView.findViewById(R.id.weatherImageView);
-        Log.i("MyDebug", weather.image);
+
         // Populate the data into the template view using the data object
         wDate.setText(weather.date);
         wTime.setText(weather.time);
         wTemp.setText(weather.temperature);
         wDesc.setText(weather.description);
         Picasso.with(context).load(weather.image).into(wImage);
-
-      //TODO: set image by url :  (weather.image) that is full path url
-      // wImage.setImageURI(url);
 
         // Return the completed view to render on screen
         return convertView;
