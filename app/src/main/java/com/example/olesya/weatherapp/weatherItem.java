@@ -3,7 +3,8 @@ package com.example.olesya.weatherapp;
 /**
  * Created by olesya on 08-Jan-16.
  */
-public class weatherItem {
+
+public class weatherItem {  //Class to describe weather objects
     private static final String TAG = "MyDebug";
     public String date, time, temperature, description, image;
 
@@ -15,5 +16,4 @@ public class weatherItem {
         this.description = ds;
         this.image = i;
     }
-
 }

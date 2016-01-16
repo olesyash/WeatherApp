@@ -8,12 +8,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,6 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements LocationListener{
+    //Define variables
     private static final int CURRENT = 9;
     private Helper rq;
     private ListView listView;
@@ -45,12 +45,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         Spinner citiesSpinner;
 
         citiesSpinner = (Spinner)findViewById(R.id.citiesSpinner);
-        citiesSpinner.setSelection(CURRENT);
+        citiesSpinner.setSelection(CURRENT); //Set selection to current location
         context = this;
         rq = new Helper();
         dialog = new ProgressDialog(context);
-        rq.createCitiesDictionary();
-        getLocation();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        rq.createCitiesDictionary(); //Creating dictionary for cities - name: id
+        getLocation(); //Use internal function to find out current location
 
         listView = (ListView) findViewById(R.id.weatherListView);
 
@@ -59,28 +61,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "item selected");
                 if (position != CURRENT) {
-                    httpRequest(parent.getItemAtPosition(position).toString());
+                    httpRequest(parent.getItemAtPosition(position).toString()); //Get weather by city
                 }
                 else
                 {
-                    getLocation();
+                    getLocation(); //Get weather by current location
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
-    }
-
-
-        @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
@@ -91,52 +84,35 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         catch (SecurityException e){}
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void httpRequest(String city)
     {
         RequestQueue queue;
 
-        String server_addr = "http://api.openweathermap.org/data/2.5/forecast?units=metric";
-        if(city == null)
+        String url = "http://api.openweathermap.org/data/2.5/forecast?units=metric";
+        if(city == null) // Get weather by current location
         {
-            server_addr += "&lat=" + current.getLatitude() + "&lon="+ current.getLongitude();
+            url += "&lat=" + current.getLatitude() + "&lon="+ current.getLongitude();
         }
-        else {
+        else { //Get weather by city id
             String cityId = rq.getCityId(city);
-            server_addr += "&id=" + cityId;
+            url += "&id=" + cityId;
         }
-        server_addr += "&appid=" + APIKEY;
-        queue = Volley.newRequestQueue(context);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+        url += "&appid=" + APIKEY; //add api key
+        queue = Volley.newRequestQueue(context); //create request
+        dialog.show(); //start progress dialog
         results = new ArrayList<weatherItem>();
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                server_addr,
+                url,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         dialog.cancel();
                         Log.i(TAG, "got response");
-                        results = (ArrayList<weatherItem>)rq.jsonToArray(response);
-                        weatherAdapter wAdapter= new weatherAdapter(context, results);
+                        results = (ArrayList<weatherItem>)rq.jsonToArray(response); // save results in list of weather objects
+                        weatherAdapter wAdapter = new weatherAdapter(context, results);
                         wAdapter.addAll(results);
-                        listView.setAdapter(wAdapter);
+                        listView.setAdapter(wAdapter); //Show the list
                     }
                 },
                 new Response.ErrorListener(){
@@ -157,8 +133,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         queue.add(request);
     }
 
-    public void getLocation()
+    //Function to find out current location
+    private void getLocation()
     {
+        dialog.show();
         PermissionManager pm;
 
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
@@ -171,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                     //Get location
                     long minTime = 10000;
                     float minDistance = 100;
-                    dialog.show();
                     try {
                         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, listener);
                     }
@@ -180,6 +157,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 }
                 else
                 {
+                    Toast.makeText(context, "Sorry you have no permissions to access location, please add " +
+                            "the permissions before using the app",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -191,10 +170,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             current = location;
             httpRequest(null);
             Log.i(TAG, "in location changed, location is" + current);
-            locationManager.removeUpdates(this);}
+            locationManager.removeUpdates(this);} //We want to get location once, so stop updates
         catch (SecurityException e){}
     }
 
+    //--------------------------- Unimplemented but must functions  -------------
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 

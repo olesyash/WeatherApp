@@ -18,7 +18,7 @@ public class Helper {
     private static final String TAG = "MyDebug";
     private Map<String, String> dictionary;
 
-    public void createCitiesDictionary()
+    public void createCitiesDictionary() //Creating dictionary to add id to each city
     {
         dictionary = new HashMap<String, String>();
         dictionary.put("Jerusalem, IL", "281184");
@@ -31,19 +31,18 @@ public class Helper {
         dictionary.put("Pokhara, Nepal", "1282898");
         dictionary.put("Amsterdam, NL", "2759794");
     }
-    public String getCityId(String city)
+    public String getCityId(String city) //return city's id by name
     {
         Log.i(TAG, "in get city, city id is" + dictionary.get(city));
         return dictionary.get(city);
     }
 
-    public ArrayList jsonToArray(JSONObject json)
+    public ArrayList jsonToArray(JSONObject json) //Convert json to list of objects
     {
         int i;
         String server = "http://openweathermap.org/img/w/";
         ArrayList<weatherItem> indexes = new ArrayList<weatherItem>();
         try {
-
             JSONArray list = json.getJSONArray("list");
             for(i=0;i<list.length();i++) {
                 JSONObject obj = list.getJSONObject(i);
@@ -55,8 +54,8 @@ public class Helper {
                 JSONArray list2 = obj.getJSONArray("weather");
                 String desc = list2.getJSONObject(0).getString("description");
                 String url = server + list2.getJSONObject(0).getString("icon")+".png";
-                weatherItem item = new weatherItem(date, time, temp+"c", desc, url);
-                indexes.add(item);
+                weatherItem item = new weatherItem(date, time, temp+"c", desc, url); //Create weather item
+                indexes.add(item); //Add to list
             }
         }
         catch (JSONException e)
